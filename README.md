@@ -2,7 +2,7 @@
 
 This repository contains the project website for:
 
-**FAVLA: A Force-Adaptive Fast-Slow VLA model for Contact-Rich Robotic Manipulation**
+**FAVLA: A Force-Adaptive Multi-Rate VLA Model for Contact-Rich Robotic Manipulation**
 
 ## Contents
 
@@ -27,6 +27,10 @@ http://localhost:8000
 ```
 
 ## Notes
+
+- Header resources include arXiv, Videos, and Code.
+- arXiv opens `https://arxiv.org/pdf/2602.23648`; Videos jumps to the demos. Replace the disabled Code button in `index.html` when its public URL is confirmed.
+- The displayed figures follow the active references in the LaTeX project `6ac70ac4f324b65ea6f0d6ae`: `overviewv2.png` and `fastslow.png` are high-resolution renders of the PDFs referenced in `sections/methods.tex`; `expsetting.png` replaces the previous hardware image using the PDF referenced in `sections/Appendix.tex`. These images were synchronized on 2026-11-04 using the Windows PDF renderer.
 
 - Videos are compressed for web hosting and GitHub size constraints.
 - `<video>` tags use `preload="none"` to reduce initial page bandwidth.

@@ -2,10 +2,10 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <meta name="description" content="FAVLA: A Force-Adaptive Fast-Slow VLA model for Contact-Rich Robotic Manipulation">
+  <meta name="description" content="FAVLA: A Force-Adaptive Multi-Rate VLA model for Contact-Rich Robotic Manipulation">
   <meta name="keywords" content="VLA, Robotic Manipulation, Force-Adaptive, Fast-Slow Architecture">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>FAVLA: A Force-Adaptive Fast-Slow VLA model for Contact-Rich Robotic Manipulation</title>
+  <title>FAVLA: A Force-Adaptive Multi-Rate VLA model for Contact-Rich Robotic Manipulation</title>
 
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
   <link rel="stylesheet" href="./static/css/bulma.min.css">
@@ -53,54 +53,72 @@
     <div class="container is-max-desktop">
       <div class="columns is-centered">
         <div class="column has-text-centered">
-          <h1 class="title is-1 publication-title">FAVLA: A Force-Adaptive Fast-Slow VLA model for Contact-Rich Robotic Manipulation</h1>
-          
-          
+          <h1 class="title is-1 publication-title">FAVLA: A Force-Adaptive Multi-Rate VLA model for Contact-Rich Robotic Manipulation</h1>
+          <div class="publication-author-info">
+            <div class="publication-authors is-size-5">
+              <span class="author-block">Yao Li<sup>1,2*</sup></span>,
+              <span class="author-block">Peiyuan Tang<sup>3,4*</sup></span>,
+              <span class="author-block">Wuyang Zhang<sup>1,2,4&dagger;</sup></span>,
+              <span class="author-block">Haojie Ren<sup>5</sup></span>,
+              <span class="author-block">Chengyang Zhu<sup>1</sup></span>,
+              <span class="author-block">Yifan Duan<sup>5</sup></span>,
+              <span class="author-block">WeiKai Shi<sup>5</sup></span>,
+              <span class="author-block">Xiaodong Zhang<sup>5</sup></span>,
+              <span class="author-block">Yuming Dong<sup>6</sup></span>,
+              <span class="author-block">Zijiang Yang<sup>5</sup></span>,
+              <span class="author-block">Jianmin Ji<sup>5</sup></span>,
+              <span class="author-block">Yanyong Zhang<sup>1&dagger;</sup></span>
+            </div>
+            <div class="publication-affiliations">
+              <p><sup>1</sup>School of Artificial Intelligence and Data Science, University of Science and Technology of China</p>
+              <p><sup>2</sup>Suzhou Institute for Advanced Research, University of Science and Technology of China</p>
+              <p><sup>3</sup>School of Computer Science and Technology, Xi'an Jiaotong University</p>
+              <p><sup>4</sup>Suzhou Artificial Intelligence Laboratory</p>
+              <p><sup>5</sup>School of Computer Science and Technology, University of Science and Technology of China</p>
+              <p><sup>6</sup>Institute of Intelligent Driving, Jianghuai Automobile Group Corp., Ltd</p>
+            </div>
+            <p class="publication-author-notes"><sup>*</sup>Equal contribution &nbsp; <sup>&dagger;</sup>Corresponding authors</p>
+          </div>
+          <nav class="publication-links" aria-label="Project resources">
+            <!-- Replace disabled resource buttons with anchors when public URLs are available. -->
+            <a class="button is-dark is-rounded" href="https://arxiv.org/pdf/2602.23648" target="_blank" rel="noopener">arXiv</a>
+            <a class="button is-dark is-rounded" href="#results">Videos</a>
+            <button class="button is-dark is-rounded" type="button" disabled title="Code release coming soon">Code · Coming soon</button>
+          </nav>
+          <nav class="section-links" aria-label="Page sections">
+            <a href="#abstract">Abstract</a><a href="#methodology">Method</a><a href="#experiments">Experiments</a><a href="#generalization">Generalization</a><a href="#failure-cases">Failure cases</a>
+          </nav>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- <section class="hero teaser">
-  <div class="container is-max-desktop">
-    <div class="hero-body">
-      <div class="video-frame">
-          <video autoplay muted loop playsinline>
-            <source src="./static/videos/favla_teaser.mp4" type="video/mp4">
-          </video>
-          </div>
-      <h2 class="subtitle has-text-centered">
-        FAVLA introduces a fast-slow VLA architecture equipped with force-adaptative control stragety, enabling robots to perform highly stable contact-rich manipulation tasks with smaller contact force.
-      </h2>
-    </div>
-  </div>
-</section> -->
-
-
-
+<section class="section abstract-section" id="abstract"><div class="container is-max-desktop"><h2 class="title is-3 has-text-centered">Abstract</h2><div class="content has-text-justified"><p>Vision-Language-Action (VLA) models have shown strong potential for general robotic manipulation, but contact-rich tasks still require timely action refinement using force/torque feedback. 
+Existing force-aware VLA models usually align all modalities to a single low operating frequency, which discards high-frequency contact cues that are important for reactive action correction. Additionally, they use static fusion, which cannot adaptively balance visual context and force feedback across manipulation processes. To mitigate these issues, we propose FAVLA, a force-adaptive multi-rate VLA model that explicitly separates low-frequency visual-language reasoning from high-frequency force-conditioned action refinement.
+Based on the π₀-style VLM-action expert architecture, FAVLA uses a low-rate VLM to encode visual-language-force context and predict near-future force statistics, while a high-rate action expert refines action chunks using the latest force observations.
+To decide when to update actions, we introduce a Force-Adaptive Multi-rate Inference (FAMI) mechanism, which schedules the action expert's inference rate from predicted future force variance, keeping low-rate reasoning in stable phases and increasing update frequency near contact transitions.
+To decide how to use force, we design a Force-Guided Dynamic Fusion (FGDF) module, which injects high-frequency force features into the action expert and dynamically balances visual-semantic and force cues across manipulation stages. 
+Extensive real-robot experiments on high-precision and contact-rich tasks show that FAVLA outperforms force-aware VLA baselines, achieving an average success rate of 88.8% and lower peak contact forces during manipulation.</p></div></div></section>
 <section class="section">
   <div class="container is-max-desktop">
     <div class="columns is-centered">
       <div class="column is-full-width">
-        <h2 class="title is-3">Methodology</h2>
+        <h2 class="title is-3" id="methodology">Methodology</h2>
         <div class="content has-text-justified">
           <figure>
-            <img src="./static/images/overviewv1.svg" alt="FAVLA Architecture" width="90%">
+            <img src="./static/images/overviewv2.png" alt="FAVLA architecture with multi-rate inference and force-guided dynamic fusion" class="method-figure overview-figure">
             <figcaption class="has-text-left is-size-6 mt-2">
-              Figure 1: Overview of the FAVLA. FAVLA integrates a large Slow VLM Backbone for semantic reasoning, and a smaller Fast Action
-              Expert for responsive action control. The model processes multimodal inputs at different frequencies and generates action trajectories
-              via the conditional Flow Matching. Notably, the inference frequency of the Action Expert is adaptively adjusted by the Force-Adaptive
-              Fast-Slow Inference Strategy, ensuring there is a smaller contact force during manipulation.
+              Figure 1: Overview of FAVLA. FAVLA runs the VLM and action expert at adaptive rates. The VLM encodes low-frequency vision, language, and force-history inputs and predicts future force for Force-Adaptive Multi-Rate Inference (FAMI). The action expert fuses the latest high-frequency force tokens through Force-Guided Dynamic Fusion (FGDF) and generates force-refined action chunks.
             </figcaption>
           </figure>
           <figure>
-            <img src="./static/images/fastslov1.svg" alt="fastslow" width="60%">
+            <img src="./static/images/fastslow.png" alt="Force-Adaptive Multi-Rate Inference timeline" class="method-figure inference-figure">
             <figcaption class="has-text-left is-size-6 mt-2">
-              Figure 2: Our force-adaptive fast-slow inference strategy. The
-              fast AE runs multiple times within each action chunk, conditioned
+              Figure 2: Our Force-Adaptive Multi-Rate Inference (FAMI) mechanism. The
+              AE can run multiple times within each action chunk, conditioned
               on real-time force. In each cycle, we fix the sampled noise and
-              robot state, then perform the temporal ensemble on overlapped
+              robot state, then perform temporal ensemble on overlapped
               action chunks. The AE execution frequency is adaptively set from
               the VLM-predicted force variance.
             </figcaption>
@@ -116,12 +134,12 @@
   <div class="container is-max-desktop">
     <div class="columns is-centered">
       <div class="column is-full-width">
-        <h2 class="title is-3">Experiments</h2>
+        <h2 class="title is-3" id="experiments">Experiments</h2>
         <div class="content has-text-justified">
           <figure>
-            <img src="./static/images/tele.svg" alt="fastslow" width="50%">
+            <img src="./static/images/expsetting.png" alt="Robot hardware setup with wrist and external cameras, a 6D force sensor, and a SpaceMouse teleoperation device" width="50%" style="clip-path: inset(2px);">
             <figcaption class="has-text-left is-size-6 mt-2">
-              Figure 3: We collect demonstration dataset with a 3D SpaceMouse teleoperation setup, 
+              Figure 3: Hardware setup for robotic manipulation, including a 7-DOF X-ARM arm, wrist and external cameras, a 6D force sensor, and a 3D SpaceMouse teleoperation device. We collect demonstration data with this setup,
               where the operator controls relative end-effector motions and receives real-time 6D force feedback 
               (we transfer the force feedback to audio). 
               During data collection, robot/object initial poses are randomized for diversity, 
@@ -138,7 +156,7 @@
 
 <section class="section">
   <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">Contact-Rich Manipulation Results</h2>
+    <h2 class="title is-3 has-text-centered" id="results">Contact-Rich Manipulation Results</h2>
     <div class="columns is-centered">
       <div class="column">
         <div class="content">
@@ -281,7 +299,7 @@
 </section>
 
 
-<section class="section generalization-section">
+<section class="section generalization-section" id="generalization">
   <div class="container is-max-desktop">
     <h2 class="title is-3 has-text-centered">Generalization Study of FAVLA</h2>
     <div class="columns is-multiline is-centered">
@@ -346,191 +364,11 @@
         </div>
       </div>
     </div>
-    <div class="content mt-6">
-      <h3 class="title is-4">OOD Test Results (10 Trials per experiment)</h3>
 
-      <h4 class="title is-5">Gear Assembly OOD Test</h4>
-      <p><strong>Success Rate</strong></p>
-      <table class="table is-bordered is-striped is-fullwidth">
-        <thead>
-          <tr>
-            <th>Setting</th>
-            <th>pi0</th>
-            <th>pi0+force</th>
-            <th>tavla</th>
-            <th>forcevla</th>
-            <th>favla</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Unseen Colors</td>
-            <td>0%</td>
-            <td>10%</td>
-            <td><strong>70%</strong></td>
-            <td>40%</td>
-            <td><strong>70%</strong></td>
-          </tr>
-          <tr>
-            <td>Height Var.</td>
-            <td>10%</td>
-            <td>40%</td>
-            <td>60%</td>
-            <td>40%</td>
-            <td><strong>70%</strong></td>
-          </tr>
-        </tbody>
-      </table>
-
-      <p><strong>Average Peak Contact Force</strong></p>
-      <table class="table is-bordered is-striped is-fullwidth">
-        <thead>
-          <tr>
-            <th>Setting</th>
-            <th>pi0</th>
-            <th>pi0+force</th>
-            <th>tavla</th>
-            <th>forcevla</th>
-            <th>favla</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Unseen Colors</td>
-            <td>20.0 N</td>
-            <td>18.0 N</td>
-            <td>14.4 N</td>
-            <td>15.2 N</td>
-            <td><strong>13.0 N</strong></td>
-          </tr>
-          <tr>
-            <td>Height Var.</td>
-            <td>19.8 N</td>
-            <td>16.9 N</td>
-            <td>15.9 N</td>
-            <td>15.8 N</td>
-            <td><strong>11.6 N</strong></td>
-          </tr>
-        </tbody>
-      </table>
-
-      <p><strong>FAVLA Force Variance Prediction MSE</strong></p>
-      <table class="table is-bordered is-striped is-fullwidth">
-        <thead>
-          <tr>
-            <th>Gear Assembly</th>
-            <th>MSE</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>In Domain</td>
-            <td>0.067</td>
-          </tr>
-          <tr>
-            <td>Unseen Colors</td>
-            <td>0.052</td>
-          </tr>
-          <tr>
-            <td>Height Var.</td>
-            <td>0.092</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h4 class="title is-5 mt-5">Box Flipping OOD Test</h4>
-      <p><strong>Success Rate</strong></p>
-      <table class="table is-bordered is-striped is-fullwidth">
-        <thead>
-          <tr>
-            <th>Setting</th>
-            <th>pi0</th>
-            <th>pi0+force</th>
-            <th>tavla</th>
-            <th>forcevla</th>
-            <th>favla</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Unseen Box1</td>
-            <td>0%</td>
-            <td>10%</td>
-            <td>0%</td>
-            <td>0%</td>
-            <td><strong>20%</strong></td>
-          </tr>
-          <tr>
-            <td>Unseen Box2</td>
-            <td>0%</td>
-            <td>0%</td>
-            <td>10%</td>
-            <td>0%</td>
-            <td><strong>20%</strong></td>
-          </tr>
-        </tbody>
-      </table>
-
-      <p><strong>Average Peak Contact Force</strong></p>
-      <table class="table is-bordered is-striped is-fullwidth">
-        <thead>
-          <tr>
-            <th>Setting</th>
-            <th>pi0</th>
-            <th>pi0+force</th>
-            <th>tavla</th>
-            <th>forcevla</th>
-            <th>favla</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Unseen Box1</td>
-            <td>23.3 N</td>
-            <td>15.4 N</td>
-            <td>12.8 N</td>
-            <td>25.0 N</td>
-            <td><strong>11.4 N</strong></td>
-          </tr>
-          <tr>
-            <td>Unseen Box2</td>
-            <td>25.0 N</td>
-            <td>22.7 N</td>
-            <td>22.2 N</td>
-            <td>25.0 N</td>
-            <td><strong>18.5 N</strong></td>
-          </tr>
-        </tbody>
-      </table>
-
-      <p><strong>FAVLA Force Variance Prediction MSE</strong></p>
-      <table class="table is-bordered is-striped is-fullwidth">
-        <thead>
-          <tr>
-            <th>Box Flipping</th>
-            <th>MSE</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>In Domain</td>
-            <td>0.046</td>
-          </tr>
-          <tr>
-            <td>Unseen Box1</td>
-            <td>0.059</td>
-          </tr>
-          <tr>
-            <td>Unseen Box2</td>
-            <td>0.064</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
   </div>
 </section>
 
-<section class="section failure-section">
+<section class="section failure-section" id="failure-cases">
   <div class="container is-max-desktop">
     <h2 class="title is-3 has-text-centered">Failure cases of FAVLA</h2>
     <div class="columns is-multiline is-centered">
@@ -566,7 +404,7 @@
       </div>
       <div class="column is-one-third-desktop is-half-tablet">
         <div class="content">
-          <h3 class="title is-4">Case 4: Cucumber Peeling with Premature Termination</h3>
+          <h3 class="title is-4">Case 4: Cucumber Peeling with advanced Termination</h3>
           <div class="video-frame">
           <video controls muted loop playsinline preload="none">
             <source src="./static/videos/failpeel.mp4" type="video/mp4">
