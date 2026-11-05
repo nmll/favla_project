@@ -38,4 +38,5 @@ http://localhost:8000
 - The page includes contact-rich and high-precision results.
 - The page includes original vs OOD paired comparisons.
 - The page includes generalization studies.
+- The Gate Dynamics Across Manipulation Stages section shows two USB insertion and two box flipping examples, with PNG previews rendered from the corresponding `static/images/*_gate.pdf` files. Each preview links to its original PDF.
 - The page includes failure cases.

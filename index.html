@@ -86,7 +86,7 @@
             <button class="button is-dark is-rounded" type="button" disabled title="Code release coming soon">Code · Coming soon</button>
           </nav>
           <nav class="section-links" aria-label="Page sections">
-            <a href="#abstract">Abstract</a><a href="#methodology">Method</a><a href="#experiments">Experiments</a><a href="#generalization">Generalization</a><a href="#failure-cases">Failure cases</a>
+            <a href="#abstract">Abstract</a><a href="#methodology">Method</a><a href="#experiments">Experiments</a>
           </nav>
         </div>
       </div>
@@ -94,12 +94,7 @@
   </div>
 </section>
 
-<section class="section abstract-section" id="abstract"><div class="container is-max-desktop"><h2 class="title is-3 has-text-centered">Abstract</h2><div class="content has-text-justified"><p>Vision-Language-Action (VLA) models have shown strong potential for general robotic manipulation, but contact-rich tasks still require timely action refinement using force/torque feedback. 
-Existing force-aware VLA models usually align all modalities to a single low operating frequency, which discards high-frequency contact cues that are important for reactive action correction. Additionally, they use static fusion, which cannot adaptively balance visual context and force feedback across manipulation processes. To mitigate these issues, we propose FAVLA, a force-adaptive multi-rate VLA model that explicitly separates low-frequency visual-language reasoning from high-frequency force-conditioned action refinement.
-Based on the π₀-style VLM-action expert architecture, FAVLA uses a low-rate VLM to encode visual-language-force context and predict near-future force statistics, while a high-rate action expert refines action chunks using the latest force observations.
-To decide when to update actions, we introduce a Force-Adaptive Multi-rate Inference (FAMI) mechanism, which schedules the action expert's inference rate from predicted future force variance, keeping low-rate reasoning in stable phases and increasing update frequency near contact transitions.
-To decide how to use force, we design a Force-Guided Dynamic Fusion (FGDF) module, which injects high-frequency force features into the action expert and dynamically balances visual-semantic and force cues across manipulation stages. 
-Extensive real-robot experiments on high-precision and contact-rich tasks show that FAVLA outperforms force-aware VLA baselines, achieving an average success rate of 88.8% and lower peak contact forces during manipulation.</p></div></div></section>
+<section class="section abstract-section" id="abstract"><div class="container is-max-desktop"><h2 class="title is-3 has-text-centered">Abstract</h2><div class="content has-text-justified"><p>Vision-Language-Action (VLA) models have shown strong potential for general robotic manipulation, but contact-rich tasks still require timely action refinement using force/torque feedback. Existing force-aware VLA models usually align all modalities to a single low operating frequency, which discards high-frequency contact cues that are important for reactive action correction. Additionally, they use static fusion, which cannot adaptively balance visual context and force feedback across manipulation processes. To mitigate these issues, we propose FAVLA, a force-adaptive multi-rate VLA model that explicitly separates low-frequency semantic reasoning from high-frequency force-conditioned action refinement. Specifically, FAVLA uses a low-rate VLM to encode visual-language-force context and predict near-future force statistics, while a high-rate action expert refines action chunks using the latest force observations. To decide <em>when</em> to update actions, we introduce a Force-Adaptive Multi-rate Inference (FAMI) mechanism, which schedules the action expert's inference rate from predicted future force variance, keeping low-rate reasoning in stable phases and increasing update frequency near contact transitions. To decide <em>how</em> to use force, we design a Force-Guided Dynamic Fusion (FGDF) module, which injects high-frequency force features into the action expert and dynamically balances visual-semantic and force cues across manipulation stages. Extensive real-robot experiments on high-precision and contact-rich tasks show that FAVLA outperforms force-aware VLA baselines, achieving an average success rate of 88.8% and lower peak contact forces during manipulation. Zero-shot evaluations further demonstrate FAVLA's robustness to visual distribution shifts.</p></div></div></section>
 <section class="section">
   <div class="container is-max-desktop">
     <div class="columns is-centered">
@@ -109,18 +104,13 @@ Extensive real-robot experiments on high-precision and contact-rich tasks show t
           <figure>
             <img src="./static/images/overviewv2.png" alt="FAVLA architecture with multi-rate inference and force-guided dynamic fusion" class="method-figure overview-figure">
             <figcaption class="has-text-left is-size-6 mt-2">
-              Figure 1: Overview of FAVLA. FAVLA runs the VLM and action expert at adaptive rates. The VLM encodes low-frequency vision, language, and force-history inputs and predicts future force for Force-Adaptive Multi-Rate Inference (FAMI). The action expert fuses the latest high-frequency force tokens through Force-Guided Dynamic Fusion (FGDF) and generates force-refined action chunks.
+              Figure 1: Overview of FAVLA. FAVLA runs the VLM and action expert at adaptive rates. The VLM encodes low-frequency vision, language, and force-history inputs and predicts future force with Force-Adaptive Multi-Rate Inference (FAMI). The action expert fuses the latest high-frequency force tokens through Force-Guided Dynamic Fusion (FGDF) and generates force-refined action chunks.
             </figcaption>
           </figure>
           <figure>
             <img src="./static/images/fastslow.png" alt="Force-Adaptive Multi-Rate Inference timeline" class="method-figure inference-figure">
             <figcaption class="has-text-left is-size-6 mt-2">
-              Figure 2: Our Force-Adaptive Multi-Rate Inference (FAMI) mechanism. The
-              AE can run multiple times within each action chunk, conditioned
-              on real-time force. In each cycle, we fix the sampled noise and
-              robot state, then perform temporal ensemble on overlapped
-              action chunks. The AE execution frequency is adaptively set from
-              the VLM-predicted force variance.
+              Figure 2: Our Force-Adaptive Multi-Rate Inference (FAMI) mechanism. The AE can run multiple times within each action chunk, conditioned on real-time force. In each cycle, we fix the sampled noise and robot state, then perform temporal ensemble on overlapped action chunks. The AE execution frequency is adaptively set from the VLM-predicted force variance.
             </figcaption>
           </figure>
         </div>
@@ -139,12 +129,7 @@ Extensive real-robot experiments on high-precision and contact-rich tasks show t
           <figure>
             <img src="./static/images/expsetting.png" alt="Robot hardware setup with wrist and external cameras, a 6D force sensor, and a SpaceMouse teleoperation device" width="50%" style="clip-path: inset(2px);">
             <figcaption class="has-text-left is-size-6 mt-2">
-              Figure 3: Hardware setup for robotic manipulation, including a 7-DOF X-ARM arm, wrist and external cameras, a 6D force sensor, and a 3D SpaceMouse teleoperation device. We collect demonstration data with this setup,
-              where the operator controls relative end-effector motions and receives real-time 6D force feedback 
-              (we transfer the force feedback to audio). 
-              During data collection, robot/object initial poses are randomized for diversity, 
-              multimodal data streams (poses and force/torque at 200 Hz, external and wrist images at 30 Hz with 640 x 360 size) 
-              are synchronized and downsampled to 30 Hz, and the final dataset is converted to LeRobot v2.1 format for training.
+              Figure 3: Hardware setup for robotic manipulation. The platform includes a 7-DOF X-ARM arm, a wrist-mounted camera, an external camera, a 6D force sensor at the wrist, and a 3D SpaceMouse teleoperation device for collecting demonstration data.
             </figcaption>
           </figure>
         </div>
@@ -156,11 +141,11 @@ Extensive real-robot experiments on high-precision and contact-rich tasks show t
 
 <section class="section">
   <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered" id="results">Contact-Rich Manipulation Results</h2>
+    <h3 class="title is-3 has-text-centered" id="results">Contact-Rich Manipulation Results</h3>
     <div class="columns is-centered">
       <div class="column">
         <div class="content">
-          <h3 class="title is-4">Task 1: FAVLA Cucumber Peeling</h3>
+          <h4 class="title is-4">Task 1: FAVLA Cucumber Peeling</h4>
           <div class="video-frame">
           <video controls muted loop playsinline preload="none">
             <source src="./static/videos/peeling.mp4" type="video/mp4">
@@ -170,7 +155,7 @@ Extensive real-robot experiments on high-precision and contact-rich tasks show t
       </div>
       <div class="column">
         <div class="content">
-          <h3 class="title is-4">Task 2: FAVLA Box Flipping</h3>
+          <h4 class="title is-4">Task 2: FAVLA Box Flipping</h4>
           <div class="video-frame">
           <video controls muted loop playsinline preload="none">
             <source src="./static/videos/fliping.mp4" type="video/mp4">
@@ -180,7 +165,7 @@ Extensive real-robot experiments on high-precision and contact-rich tasks show t
       </div>
       <div class="column">
         <div class="content">
-          <h3 class="title is-4">Task 3: FAVLA Whiteboard Wiping</h3>
+          <h4 class="title is-4">Task 3: FAVLA Whiteboard Wiping</h4>
           <div class="video-frame">
           <video controls muted loop playsinline preload="none">
             <source src="./static/videos/wiping.mp4" type="video/mp4">
@@ -194,11 +179,11 @@ Extensive real-robot experiments on high-precision and contact-rich tasks show t
 
 <section class="section">
   <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">Contact-Rich and High-Precision Manipulation Results</h2>
+    <h3 class="title is-3 has-text-centered">Contact-Rich and High-Precision Manipulation Results</h3>
     <div class="columns is-centered">
       <div class="column">
         <div class="content">
-          <h3 class="title is-4">Task 4: FAVLA Gear Placement (Position 1)</h3>
+          <h4 class="title is-4">Task 4: FAVLA Gear Placement (Position 1)</h4>
           <div class="video-frame">
           <video controls muted loop playsinline preload="none">
             <source src="./static/videos/assem.mp4" type="video/mp4">
@@ -208,7 +193,7 @@ Extensive real-robot experiments on high-precision and contact-rich tasks show t
       </div>
       <div class="column">
         <div class="content">
-          <h3 class="title is-4">Task 5: FAVLA Gear Placement (Position 2)</h3>
+          <h4 class="title is-4">Task 5: FAVLA Gear Placement (Position 2)</h4>
           <div class="video-frame">
           <video controls muted loop playsinline preload="none">
             <source src="./static/videos/assem1.mp4" type="video/mp4">
@@ -218,7 +203,7 @@ Extensive real-robot experiments on high-precision and contact-rich tasks show t
       </div>
       <div class="column">
         <div class="content">
-          <h3 class="title is-4">Task 6: FAVLA USB Drive Insertion</h3>
+          <h4 class="title is-4">Task 6: FAVLA USB Drive Insertion</h4>
           <div class="video-frame">
           <video controls muted loop playsinline preload="none">
             <source src="./static/videos/usb.mp4" type="video/mp4">
@@ -232,11 +217,11 @@ Extensive real-robot experiments on high-precision and contact-rich tasks show t
 
 <section class="section">
   <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">Frequency Prediction and Contact Force Analysis Results</h2>
+    <h3 class="title is-3 has-text-centered">Frequency Prediction and Contact Force Analysis Results</h3>
     <div class="columns is-multiline is-centered">
     <div class="column is-half-desktop is-full-mobile">
         <div class="content">
-          <h3 class="title is-4">USB Insertion</h3>
+          <h4 class="title is-4">USB Insertion</h4>
           <div class="video-frame">
             <video controls muted loop playsinline preload="none">
               <source src="./static/videos/usbfreq.mp4" type="video/mp4">
@@ -246,7 +231,7 @@ Extensive real-robot experiments on high-precision and contact-rich tasks show t
       </div>
       <div class="column is-half-desktop is-full-mobile">
         <div class="content">
-          <h3 class="title is-4">USB Insertion (OOD)</h3>
+          <h4 class="title is-4">USB Insertion (OOD)</h4>
           <div class="video-frame">
             <video controls muted loop playsinline preload="none">
               <source src="./static/videos/usboodfreq.mp4" type="video/mp4">
@@ -256,7 +241,7 @@ Extensive real-robot experiments on high-precision and contact-rich tasks show t
       </div>
       <div class="column is-half-desktop is-full-mobile">
         <div class="content">
-          <h3 class="title is-4">Gear Placement</h3>
+          <h4 class="title is-4">Gear Placement</h4>
           <div class="video-frame">
             <video controls muted loop playsinline preload="none">
               <source src="./static/videos/gearfreq.mp4" type="video/mp4">
@@ -266,7 +251,7 @@ Extensive real-robot experiments on high-precision and contact-rich tasks show t
       </div>
       <div class="column is-half-desktop is-full-mobile">
         <div class="content">
-          <h3 class="title is-4">Gear Placement (OOD)</h3>
+          <h4 class="title is-4">Gear Placement (OOD)</h4>
           <div class="video-frame">
             <video controls muted loop playsinline preload="none">
               <source src="./static/videos/gearoodfreq.mp4" type="video/mp4">
@@ -276,7 +261,7 @@ Extensive real-robot experiments on high-precision and contact-rich tasks show t
       </div>
       <div class="column is-half-desktop is-full-mobile">
         <div class="content">
-          <h3 class="title is-4">Box Flipping</h3>
+          <h4 class="title is-4">Box Flipping</h4>
           <div class="video-frame">
             <video controls muted loop playsinline preload="none">
               <source src="./static/videos/boxfreq.mp4" type="video/mp4">
@@ -286,7 +271,7 @@ Extensive real-robot experiments on high-precision and contact-rich tasks show t
       </div>
       <div class="column is-half-desktop is-full-mobile">
         <div class="content">
-          <h3 class="title is-4">Box Flipping (OOD)</h3>
+          <h4 class="title is-4">Box Flipping (OOD)</h4>
           <div class="video-frame">
             <video controls muted loop playsinline preload="none">
               <source src="./static/videos/boxoodfreq.mp4" type="video/mp4">
@@ -299,13 +284,60 @@ Extensive real-robot experiments on high-precision and contact-rich tasks show t
 </section>
 
 
+<section class="section gate-section" id="gate-dynamics" aria-labelledby="gate-dynamics-title">
+  <div class="container is-max-desktop">
+    <h3 class="title is-3 has-text-centered" id="gate-dynamics-title">Gate Dynamics Across Manipulation Stages</h3>
+    <div class="content gate-intro">
+      <p>We visualize the Force-Guided Dynamic Fusion (FGDF) gates throughout USB insertion and box flipping. Each example aligns measured forces, gate values at selected action-expert layers, and wrist-camera views at key interaction stages. The numbered markers connect the force and gate curves to the corresponding task stages. As discussed in the paper, the gates show selective activation across layers and time: shallow layers exhibit transient responses, middle layers show stronger and more sustained activation, and the final layers remain mostly inactive.</p>
+    </div>
+    <h4 class="title is-4">USB Insertion</h4>
+    <div class="columns">
+      <div class="column is-half">
+        <figure class="gate-figure">
+          <a href="./static/images/usb1_gate.pdf" target="_blank" rel="noopener" aria-label="Open USB insertion example 1 as a PDF">
+            <img src="./static/images/usb1_gate.png" alt="USB insertion example 1: force measurements and per-layer gates aligned with initial, approach, and insertion stages" loading="lazy" decoding="async">
+          </a>
+          <figcaption>USB insertion, example 1. (a) Raw force measurements. (b) FGDF gate values at selected action-expert layers. (c) Wrist-camera views during the initial, approach, and insertion stages.</figcaption>
+        </figure>
+      </div>
+      <div class="column is-half">
+        <figure class="gate-figure">
+          <a href="./static/images/usb2_gate.pdf" target="_blank" rel="noopener" aria-label="Open USB insertion example 2 as a PDF">
+            <img src="./static/images/usb2_gate.png" alt="USB insertion example 2: force measurements and per-layer gates aligned with initial, approach, and insertion stages" loading="lazy" decoding="async">
+          </a>
+          <figcaption>USB insertion, example 2. (a) Raw force measurements. (b) FGDF gate values at selected action-expert layers. (c) Wrist-camera views during the initial, approach, and insertion stages.</figcaption>
+        </figure>
+      </div>
+    </div>
+    <h4 class="title is-4">Box Flipping</h4>
+    <div class="columns">
+      <div class="column is-half">
+        <figure class="gate-figure">
+          <a href="./static/images/flip01045_gate.pdf" target="_blank" rel="noopener" aria-label="Open box flipping example 1 as a PDF">
+            <img src="./static/images/flip01045_gate.png" alt="Box flipping example 1: force measurements and per-layer gates aligned with initial, contact, and flipping stages" loading="lazy" decoding="async">
+          </a>
+          <figcaption>Box flipping, example 1. (a) Raw force measurements. (b) FGDF gate values at selected action-expert layers. (c) Wrist-camera views during the initial, contact, and flipping stages.</figcaption>
+        </figure>
+      </div>
+      <div class="column is-half">
+        <figure class="gate-figure">
+          <a href="./static/images/flip01046_gate.pdf" target="_blank" rel="noopener" aria-label="Open box flipping example 2 as a PDF">
+            <img src="./static/images/flip01046_gate.png" alt="Box flipping example 2: force measurements and per-layer gates aligned with initial, contact, and flipping stages" loading="lazy" decoding="async">
+          </a>
+          <figcaption>Box flipping, example 2. (a) Raw force measurements. (b) FGDF gate values at selected action-expert layers. (c) Wrist-camera views during the initial, contact, and flipping stages.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="section generalization-section" id="generalization">
   <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">Generalization Study of FAVLA</h2>
+    <h3 class="title is-3 has-text-centered">Generalization Study of FAVLA</h3>
     <div class="columns is-multiline is-centered">
       <div class="column is-one-third-desktop is-half-tablet">
         <div class="content">
-          <h3 class="title is-4">Study 1: Unseen Box</h3>
+          <h4 class="title is-4">Study 1: Unseen Box</h4>
           <div class="video-frame">
           <video controls muted loop playsinline preload="none">
             <source src="./static/videos/unseenflip.mp4" type="video/mp4">
@@ -315,7 +347,7 @@ Extensive real-robot experiments on high-precision and contact-rich tasks show t
       </div>
       <div class="column is-one-third-desktop is-half-tablet">
         <div class="content">
-          <h3 class="title is-4">Study 2: Unseen Handwriting</h3>
+          <h4 class="title is-4">Study 2: Unseen Handwriting</h4>
           <div class="video-frame">
           <video controls muted loop playsinline preload="none">
             <source src="./static/videos/unseenwipe.mp4" type="video/mp4">
@@ -325,7 +357,7 @@ Extensive real-robot experiments on high-precision and contact-rich tasks show t
       </div>
       <div class="column is-one-third-desktop is-half-tablet">
         <div class="content">
-          <h3 class="title is-4">Study 3: Unseen USB Drive</h3>
+          <h4 class="title is-4">Study 3: Unseen USB Drive</h4>
           <div class="video-frame">
           <video controls muted loop playsinline preload="none">
             <source src="./static/videos/unseenusb.mp4" type="video/mp4">
@@ -335,7 +367,7 @@ Extensive real-robot experiments on high-precision and contact-rich tasks show t
       </div>
       <div class="column is-one-third-desktop is-half-tablet">
         <div class="content">
-          <h3 class="title is-4">Study 4: Unseen Gear</h3>
+          <h4 class="title is-4">Study 4: Unseen Gear</h4>
           <div class="video-frame">
           <video controls muted loop playsinline preload="none">
             <source src="./static/videos/unseengear1.mp4" type="video/mp4">
@@ -345,7 +377,7 @@ Extensive real-robot experiments on high-precision and contact-rich tasks show t
       </div>
       <div class="column is-one-third-desktop is-half-tablet">
         <div class="content">
-          <h3 class="title is-4">Study 5: Unseen Base</h3>
+          <h4 class="title is-4">Study 5: Unseen Base</h4>
           <div class="video-frame">
           <video controls muted loop playsinline preload="none">
             <source src="./static/videos/unseengear2.mp4" type="video/mp4">
@@ -355,7 +387,7 @@ Extensive real-robot experiments on high-precision and contact-rich tasks show t
       </div>
       <div class="column is-one-third-desktop is-half-tablet">
         <div class="content">
-          <h3 class="title is-4">Study 6: Unseen Gear and Base</h3>
+          <h4 class="title is-4">Study 6: Unseen Gear and Base</h4>
           <div class="video-frame">
           <video controls muted loop playsinline preload="none">
             <source src="./static/videos/unseengear.mp4" type="video/mp4">
@@ -370,11 +402,11 @@ Extensive real-robot experiments on high-precision and contact-rich tasks show t
 
 <section class="section failure-section" id="failure-cases">
   <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">Failure cases of FAVLA</h2>
+    <h3 class="title is-3 has-text-centered">Failure cases of FAVLA</h3>
     <div class="columns is-multiline is-centered">
       <div class="column is-one-third-desktop is-half-tablet">
         <div class="content">
-          <h3 class="title is-4">Case 1: Whiteboard Wiping with Uncleaned Marks</h3>
+          <h4 class="title is-4">Case 1: Whiteboard Wiping with Uncleaned Marks</h4>
           <div class="video-frame">
           <video controls muted loop playsinline preload="none">
             <source src="./static/videos/failwipe.mp4" type="video/mp4">
@@ -384,7 +416,7 @@ Extensive real-robot experiments on high-precision and contact-rich tasks show t
       </div>
       <div class="column is-one-third-desktop is-half-tablet">
         <div class="content">
-          <h3 class="title is-4">Case 2: USB Drive Insertion with Misalignment</h3>
+          <h4 class="title is-4">Case 2: USB Drive Insertion with Misalignment</h4>
           <div class="video-frame">
           <video controls muted loop playsinline preload="none">
             <source src="./static/videos/failusb1.mp4" type="video/mp4">
@@ -394,7 +426,7 @@ Extensive real-robot experiments on high-precision and contact-rich tasks show t
       </div>
       <div class="column is-one-third-desktop is-half-tablet">
         <div class="content">
-          <h3 class="title is-4">Case 3: Unseen USB Drive Insertion with Partial Insertion</h3>
+          <h4 class="title is-4">Case 3: Unseen USB Drive Insertion with Partial Insertion</h4>
           <div class="video-frame">
           <video controls muted loop playsinline preload="none">
             <source src="./static/videos/failusb.mp4" type="video/mp4">
@@ -404,7 +436,7 @@ Extensive real-robot experiments on high-precision and contact-rich tasks show t
       </div>
       <div class="column is-one-third-desktop is-half-tablet">
         <div class="content">
-          <h3 class="title is-4">Case 4: Cucumber Peeling with advanced Termination</h3>
+          <h4 class="title is-4">Case 4: Cucumber Peeling with advanced Termination</h4>
           <div class="video-frame">
           <video controls muted loop playsinline preload="none">
             <source src="./static/videos/failpeel.mp4" type="video/mp4">
@@ -414,7 +446,7 @@ Extensive real-robot experiments on high-precision and contact-rich tasks show t
       </div>
       <div class="column is-one-third-desktop is-half-tablet">
         <div class="content">
-          <h3 class="title is-4">Case 5: Gear Placement with Timed-Out Alignment Attempts</h3>
+          <h4 class="title is-4">Case 5: Gear Placement with Timed-Out Alignment Attempts</h4>
           <div class="video-frame">
           <video controls muted loop playsinline preload="none">
             <source src="./static/videos/failgear.mp4" type="video/mp4">
@@ -424,7 +456,7 @@ Extensive real-robot experiments on high-precision and contact-rich tasks show t
       </div>
       <div class="column is-one-third-desktop is-half-tablet">
         <div class="content">
-          <h3 class="title is-4">Case 6: Box Flipping with Incomplete Rotation</h3>
+          <h4 class="title is-4">Case 6: Box Flipping with Incomplete Rotation</h4>
           <div class="video-frame">
           <video controls muted loop playsinline preload="none">
             <source src="./static/videos/failflip.mp4" type="video/mp4">
